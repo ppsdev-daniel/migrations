@@ -1,0 +1,36 @@
+{
+  "name": "migration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node ./src/server",
+    "dev": "nodemon ./dist/server",
+    "build": "tsc",
+    "build:w": "tsc --watch",
+    "update:latest": "cross-env TS_NODE_PROJECT=./migrations/tsconfig.knex.json knex migrate:latest --knexfile ./migrations/knex-config.ts",
+    "update": "cross-env TS_NODE_PROJECT=./migrations/tsconfig.knex.json knex migrate:up --knexfile ./migrations/knex-config.ts",
+    "downgrade": "cross-env TS_NODE_PROJECT=./migrations/tsconfig.knex.json knex migrate:down --knexfile ./migrations/knex-config.ts",
+    "version": "cross-env TS_NODE_PROJECT=./migrations/tsconfig.knex.json knex migrate:list --knexfile ./migrations/knex-config.ts",
+    "migrate:to": "ts-node --project ./migrations/tsconfig.knex.json ./migrations/migrate.ts",
+    "up": "docker-compose up",
+    "build:image": "docker build -t migrations ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "knex": "^3.1.0",
+    "pg": "^8.16.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "sucrase": "^3.35.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "typescript-node": "^0.1.3"
+  }
+}

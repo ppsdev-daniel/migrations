@@ -1,0 +1,49 @@
+version: "3.8"
+
+services:
+  # Serviço da sua Aplicação/API
+  api:
+    # IMAGEM: Usa uma imagem oficial e leve do Node.js.
+    image: migrations:latest
+    container_name: migrater
+    # WORKING_DIR: Define o diretório padrão dentro do contêiner.
+    working_dir: /usr/migrater
+    restart: always
+    command: ["npm", "start"]
+    depends_on:
+      database:
+        condition: service_healthy
+    ports:
+      - "3232:3232"
+    environment:
+      # As variáveis são construídas a partir das configs dos outros serviços.
+      DB_HOST: "database"
+      DB_USER: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_DATABASE: "test_db"
+      NODE_ENV: "production"
+
+  # Serviço do Banco de Dados
+  database:
+    image: postgres:15-alpine
+    container_name: postgres
+    restart: always
+    environment:
+      # As variáveis são referenciadas pelo serviço 'api' acima.
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "test_db" # Nome do banco corrigido para ser consistente.
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      # Testa se o banco de dados está pronto para aceitar conexões.
+      test: ["CMD-SHELL", "pg_isready -U postgres -d test_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+# Volumes nomeados para persistência de dados
+volumes:
+  postgres_data:
+  pgadmin_data:

@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json", // Herda as regras do tsconfig.json principal
+  "compilerOptions": {
+    // SOBRESCREVE as opções apenas para o ambiente do Knex
+    "moduleResolution": "Node", // Usa a resolução de módulos clássica do Node
+    "skipLibCheck": true
+  },
+  "include": [
+    // Diz a este tsconfig que ele precisa enxergar tanto os arquivos da...
+    "../src/**/*.ts", // ...aplicação (para os imports funcionarem)
+    "./**/*.ts" // ...quanto os da própria pasta 'database' (migrations, knexfile)
+  ]
+}
